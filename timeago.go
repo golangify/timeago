@@ -2,11 +2,11 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-//timeago allows the formatting of time in terms of fuzzy timestamps.
-//For example:
-//	one minute ago
-//	3 years ago
-//	in 2 minutes
+// timeago allows the formatting of time in terms of fuzzy timestamps.
+// For example:
+//	 one minute ago
+//	 3 years ago
+//	 in 2 minutes
 package timeago
 
 import (
@@ -27,9 +27,9 @@ type FormatPeriod struct {
 	Many string
 }
 
-//Config allows the customization of timeago.
-//You may configure string items (language, plurals, ...) and
-//maximum allowed duration value for fuzzy formatting.
+// Config allows the customization of timeago.
+// You may configure string items (language, plurals, ...) and
+// maximum allowed duration value for fuzzy formatting.
 type Config struct {
 	PastPrefix   string
 	PastSuffix   string
@@ -46,7 +46,7 @@ type Config struct {
 	DefaultLayout string
 }
 
-//Predefined english configuration
+// Predefined english configuration
 var English = Config{
 	PastPrefix:   "",
 	PastSuffix:   " ago",
@@ -130,7 +130,7 @@ var Chinese = Config{
 	DefaultLayout: "2006-01-02",
 }
 
-//Predefined french configuration
+// Predefined french configuration
 var French = Config{
 	PastPrefix:   "il y a ",
 	PastSuffix:   "",
@@ -152,7 +152,7 @@ var French = Config{
 	DefaultLayout: "02/01/2006",
 }
 
-//Predefined german configuration
+// Predefined german configuration
 var German = Config{
 	PastPrefix:   "vor ",
 	PastSuffix:   "",
@@ -174,7 +174,7 @@ var German = Config{
 	DefaultLayout: "02.01.2006",
 }
 
-//Predefined turkish configuration
+// Predefined turkish configuration
 var Turkish = Config{
 	PastPrefix:   "",
 	PastSuffix:   " önce",
@@ -217,6 +217,29 @@ var Korean = Config{
 	Max:           10 * 365 * 24 * time.Hour,
 	DefaultLayout: "2006-01-02",
 }
+
+// Predefined Russian configuration
+var Russian = Config{
+        PastPrefix:   "",
+        PastSuffix:   " назад",
+        FuturePrefix: "через ",
+        FutureSuffix: "",
+
+        Periods: []FormatPeriod{
+                {time.Second, "около секунды", "около %d секунд"},
+                {time.Minute, "около минуты", "около %d минут"},
+                {time.Hour, "около часа", "около %d часов"},
+                {Day, "один день", "около %d дней"},
+                {Month, "один месяц", "около %d месяцев"},
+                {Year, "один год", "около %d лет"},
+        },
+
+        Zero: "около секунды",
+
+        Max:           73 * time.Hour,
+        DefaultLayout: "02.01.2006",
+}
+
 
 //Format returns a textual representation of the time value formatted according to the layout
 //defined in the Config. The time is compared to time.Now() and is then formatted as a fuzzy
