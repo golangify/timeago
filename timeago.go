@@ -4,9 +4,10 @@
 
 // timeago allows the formatting of time in terms of fuzzy timestamps.
 // For example:
-//	 one minute ago
-//	 3 years ago
-//	 in 2 minutes
+//
+//	one minute ago
+//	3 years ago
+//	in 2 minutes
 package timeago
 
 import (
@@ -220,35 +221,34 @@ var Korean = Config{
 
 // Predefined Russian configuration
 var Russian = Config{
-        PastPrefix:   "",
-        PastSuffix:   " назад",
-        FuturePrefix: "через ",
-        FutureSuffix: "",
+	PastPrefix:   "",
+	PastSuffix:   " назад",
+	FuturePrefix: "через ",
+	FutureSuffix: "",
 
-        Periods: []FormatPeriod{
-                {time.Second, "около секунды", "около %d секунд"},
-                {time.Minute, "около минуты", "около %d минут"},
-                {time.Hour, "около часа", "около %d часов"},
-                {Day, "один день", "около %d дней"},
-                {Month, "один месяц", "около %d месяцев"},
-                {Year, "один год", "около %d лет"},
-        },
+	Periods: []FormatPeriod{
+		{time.Second, "около секунды", "около %d секунд"},
+		{time.Minute, "около минуты", "около %d минут"},
+		{time.Hour, "около часа", "около %d часов"},
+		{Day, "один день", "около %d дней"},
+		{Month, "один месяц", "около %d месяцев"},
+		{Year, "один год", "около %d лет"},
+	},
 
-        Zero: "около секунды",
+	Zero: "около секунды",
 
-        Max:           73 * time.Hour,
-        DefaultLayout: "02.01.2006",
+	Max:           73 * time.Hour,
+	DefaultLayout: "02.01.2006",
 }
 
-
-//Format returns a textual representation of the time value formatted according to the layout
-//defined in the Config. The time is compared to time.Now() and is then formatted as a fuzzy
-//timestamp (eg. "4 days ago")
+// Format returns a textual representation of the time value formatted according to the layout
+// defined in the Config. The time is compared to time.Now() and is then formatted as a fuzzy
+// timestamp (eg. "4 days ago")
 func (cfg Config) Format(t time.Time) string {
 	return cfg.FormatReference(t, time.Now())
 }
 
-//FormatReference is the same as Format, but the reference has to be defined by the caller
+// FormatReference is the same as Format, but the reference has to be defined by the caller
 func (cfg Config) FormatReference(t time.Time, reference time.Time) string {
 
 	d := reference.Sub(t)
@@ -260,8 +260,8 @@ func (cfg Config) FormatReference(t time.Time, reference time.Time) string {
 	return cfg.FormatRelativeDuration(d)
 }
 
-//FormatRelativeDuration is the same as Format, but for time.Duration.
-//Config.Max is not used in this function, as there is no other alternative.
+// FormatRelativeDuration is the same as Format, but for time.Duration.
+// Config.Max is not used in this function, as there is no other alternative.
 func (cfg Config) FormatRelativeDuration(d time.Duration) string {
 
 	isPast := d >= 0
@@ -279,7 +279,7 @@ func (cfg Config) FormatRelativeDuration(d time.Duration) string {
 	}
 }
 
-//Round the duration d in terms of step.
+// Round the duration d in terms of step.
 func round(d time.Duration, step time.Duration, roundCloser bool) time.Duration {
 
 	if roundCloser {
@@ -289,12 +289,12 @@ func round(d time.Duration, step time.Duration, roundCloser bool) time.Duration 
 	return time.Duration(float64(d) / float64(step))
 }
 
-//Count the number of parameters in a format string
+// Count the number of parameters in a format string
 func nbParamInFormat(f string) int {
 	return strings.Count(f, "%") - 2*strings.Count(f, "%%")
 }
 
-//Convert a duration to a text, based on the current config
+// Convert a duration to a text, based on the current config
 func (cfg Config) getTimeText(d time.Duration, roundCloser bool) (string, time.Duration) {
 	if len(cfg.Periods) == 0 || d < cfg.Periods[0].D {
 		return cfg.Zero, 0
@@ -335,13 +335,13 @@ func (cfg Config) getTimeText(d time.Duration, roundCloser bool) (string, time.D
 	return d.String(), 0
 }
 
-//NoMax creates an new config without a maximum
+// NoMax creates an new config without a maximum
 func NoMax(cfg Config) Config {
 	return WithMax(cfg, 9223372036854775807, time.RFC3339)
 }
 
-//WithMax creates an new config with special formatting limited to durations less than max.
-//Values greater than max will be formatted by the standard time package using the defaultLayout.
+// WithMax creates an new config with special formatting limited to durations less than max.
+// Values greater than max will be formatted by the standard time package using the defaultLayout.
 func WithMax(cfg Config, max time.Duration, defaultLayout string) Config {
 	n := cfg
 	n.Max = max
